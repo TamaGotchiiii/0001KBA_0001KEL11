@@ -1,0 +1,376 @@
+domains
+nama=string*
+nMatik,nBahasa,nInggris,nIpa,nTik=integer
+jawab=char
+rMatikAd,rMatikAk,rMatikTkj=real
+norNilaiAd,norNilaiAk,norNilaiTkj=real
+rBahasaAd,rBahasaAk,rBahasaTkj=real
+rInggrisAd,rInggrisAk,rInggrisTkj=real
+rIpaAd,rIpaAk,rIpaTkj=real
+rTikAd,rTikAk,rTikTkj=real
+scoreAd,scoreAk,scoreTkj=real
+
+
+predicates
+ nondeterm run
+ nondeterm nilai1(nMatik,nBahasa,nInggris,nIpa,nTik)
+ nondeterm nilai2(norNilaiAd,norNilaiAk,norNilaiTkj,nBahasa,nInggris,nIpa,nTik)
+ nondeterm nilai3(norNilaiAd,norNilaiAk,norNilaiTkj,nInggris,nIpa,nTik)
+ nondeterm nilai4(norNilaiAd,norNilaiAk,norNilaiTkj,nIpa,nTik)
+ nondeterm nilai5(norNilaiAd,norNilaiAk,norNilaiTkj,nTik)
+ nondeterm proc1(rMatikAd,rMatikAk,rMatikTkj,nBahasa,nInggris,nIpa,nTik)
+ nondeterm proc2(norNilaiAd,norNilaiAk,norNilaiTkj,rBahasaAd,rBahasaAk,rBahasaTkj,nInggris,nIpa,nTik)
+ nondeterm proc3(norNilaiAd,norNilaiAk,norNilaiTkj,rInggrisAd,rInggrisAk,rInggrisTkj,nIpa,nTik)
+ nondeterm proc4(norNilaiAd,norNilaiAk,norNilaiTkj,rIpaAd,rIpaAk,rIpaTkj,nTik)
+ nondeterm proc5(norNilaiAd,norNilaiAk,norNilaiTkj,rTikAd,rTikAk,rTikTkj)
+ nondeterm score(scoreAd,scoreAk,scoreTkj)
+ nondeterm loop(jawab)
+ nondeterm name(nama)
+clauses
+loop(X):-nl,
+ X='y',
+ run;
+ X='Y',run.
+loop(X):-nl,
+ X='t',
+ write("Terima Kasih sampai jumpa!!");
+ X='T',write("Terima Kasih sampai jumpa!!").
+ 
+loop(_):-nl,
+ write("Maaf Input Salah!! Coba lagi!"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X).
+run:-
+ write("Hallo, Masukkan Nama Anda : "),readln(Y),nl,
+ write("Selamat Datang ",Y),nl,
+ write("Di Program Sistem Pendukung Keputusan untuk pemilihan Jurusan SMK"),nl,
+ write("Jurusan yang dapat dirating adalah"),nl,
+ write("1. Administrasi Perkantoran"),nl,
+ write("2. Akuntansi"),nl,
+ write("3. TKJ"),nl,
+ write("Silahkan masukkan nilai Matematika : "),readint(C1),nl,
+ write("Silahkan masukkan nilai Bahasa Indonesia : "),readint(C2),nl,
+ write("Silahkan masukkan nilai Bahasa Inggris : "), readint(C3),nl,
+ write("Silahkan masukkan nilai IPA : "),readint(C4),nl,
+ write("Silahkan masukkan nilai TIK : "),readint(C5),nl,
+ nilai1(C1,C2,C3,C4,C5),
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),nl.
+ 
+nilai1(A,B,C,D,E):-
+ A>=60,A<=69,
+ RAd1=0.25,
+ RAk1=0.25,
+ RT1=0.25,
+ proc1(RAd1,RAk1,RT1,B,C,D,E).
+
+nilai1(A,B,C,D,E):-
+ A>=70,A<=79,
+ RAd1=0.25,
+ RAk1=0.5,
+ RT1=0.5,
+ proc1(RAd1,RAk1,RT1,B,C,D,E).
+ 
+nilai1(A,B,C,D,E):-
+ A>=80,A<=100,
+ RAd1=0.5,
+ RAk1=1.00,
+ RT1=0.5,
+ proc1(RAd1,RAk1,RT1,B,C,D,E).
+
+nilai1(A,B,C,D,E):-
+ A>=0,A<=59,
+ RAd1=0.1,
+ RAk1=0.25,
+ RT1=0.2,
+ proc1(RAd1,RAk1,RT1,B,C,D,E).
+ 
+nilai1(A,B,C,D,E):-
+ A<0,
+ write("Nilai Matematika yang dimasukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit;
+ A>100,
+ write("Nilai Matematika yang dimasukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit. 
+
+
+
+proc1(A,B,C,D,E,F,G):-
+ A>B,A>C,
+ NRAd1=(A/A)*5,
+ NRAk1=(B/A)*5,
+ NRT1=(C/A)*5,
+ nilai2(NRAd1,NRAk1,NRT1,D,E,F,G).
+ 
+
+proc1(A,B,C,D,E,F,G):-
+ B>C,
+ NRAd1=(A/B)*5,
+ NRAk1=(B/B)*5,
+ NRT1=(C/B)*5,
+ nilai2(NRAd1,NRAk1,NRT1,D,E,F,G).
+ 
+proc1(A,B,C,D,E,F,G):-
+ NRAd1=(A/C)*5,
+ NRAk1=(B/C)*5,
+ NRT1=(C/C)*5,
+ nilai2(NRAd1,NRAk1,NRT1,D,E,F,G).
+ 
+nilai2(A,B,C,D,E,F,G):-
+ D>=60,D<=79,
+ RAd2=0.5,
+ RAk2=0.25,
+ RT2=0.25,
+ proc2(A,B,C,RAd2,RAk2,RT2,E,F,G).
+ 
+nilai2(A,B,C,D,E,F,G):-
+ D>=80,D<=100,
+ RAd2=0.75,
+ RAk2=0.5,
+ RT2=0.5,
+ proc2(A,B,C,RAd2,RAk2,RT2,E,F,G).
+ 
+nilai2(A,B,C,D,E,F,G):-
+ D>=0,D<=59,
+ RAd2=0.25,
+ RAk2=0.15,
+ RT2=0.15,
+ proc2(A,B,C,RAd2,RAk2,RT2,E,F,G).
+
+
+nilai2(A,B,C,D,E,F,G):-
+ D<0,
+ write("Nilai Bahasa yang anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit;
+ D>100,
+ write("Nilai Bahasa yanga anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit. 
+ 
+ 
+ 
+proc2(A,B,C,D,E,F,G,H,I):-
+ D<E,D<F,
+ NRAd2=D/D+A,
+ NRAk2=D/E+B,
+ NRT2=D/F+C,
+ nilai3(NRAd2,NRAk2,NRT2,G,H,I).
+ 
+proc2(A,B,C,D,E,F,G,H,I):-
+ E<F,
+ NRAd2=((E/D)*4)+A,
+ NRAk2=((E/E)*4)+B,
+ NRT2=((E/F)*4)+C,
+ nilai3(NRAd2,NRAk2,NRT2,G,H,I).
+ 
+proc2(A,B,C,D,E,F,G,H,I):-
+ NRAd2=((F/D)*4)+A,
+ NRAk2=((F/E)*4)+B,
+ NRT2=((F/F)*4)+C,
+ nilai3(NRAd2,NRAk2,NRT2,G,H,I).
+ 
+nilai3(A,B,C,D,E,F):-
+ D>=60,D<=69,
+ RAd3=0.5,
+ RAk3=0.25,
+ RT3 = 0.25,
+ proc3(A,B,C,RAd3,RAk3,RT3,E,F).
+ 
+nilai3(A,B,C,D,E,F):-
+ D>=70,D<=79,
+ RAd3=0.5,
+ RAk3=0.25,
+ RT3 = 0.5,
+ proc3(A,B,C,RAd3,RAk3,RT3,E,F).
+  
+nilai3(A,B,C,D,E,F):-
+ D>=80,D<=100,
+ RAd3=0.75,
+ RAk3=0.5,
+ RT3 = 0.5,
+ proc3(A,B,C,RAd3,RAk3,RT3,E,F).
+ 
+nilai3(A,B,C,D,E,F):-
+ D>=0,D<=59,
+ RAd3=0.25,
+ RAk3=0.15,
+ RT3 = 0.15,
+ proc3(A,B,C,RAd3,RAk3,RT3,E,F).
+ 
+nilai3(A,B,C,D,E,F):- 
+ D<0,
+ write("Nilai Bahasa Inggris yang anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit;
+ D>100,
+ write("Nilai Bahasa Inggris yang anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit. 
+ 
+proc3(A,B,C,D,E,F,G,H):-
+ D>E,D>F,
+ NRAd3=((D/D)*5)+A,
+ NRAk3=((E/D)*5)+B,
+ NRT3=((F/D)*5)+C,
+ nilai4(NRAd3,NRAk3,NRT3,G,H).
+
+proc3(A,B,C,D,E,F,G,H):-
+ E>F,
+ NRAd3=((D/E)*5)+A,
+ NRAk3=((E/E)*5)+B,
+ NRT3=((F/E)*5)+C,
+ nilai4(NRAd3,NRAk3,NRT3,G,H). 
+
+proc3(A,B,C,D,E,F,G,H):-
+ NRAd3=((D/F)*5)+A,
+ NRAk3=((E/F)*5)+B,
+ NRT3=((F/F)*5)+C,
+ nilai4(NRAd3,NRAk3,NRT3,G,H).
+ 
+nilai4(A,B,C,D,E):-
+ D>=0,D<=69,
+ RAd4=0.15,
+ RAk4=0.15,
+ RT4=0.2,
+ proc4(A,B,C,RAd4,RAk4,RT4,E).
+ 
+nilai4(A,B,C,D,E):-
+ D>=70,D<=79,
+ RAd4=0.25,
+ RAk4=0.25,
+ RT4=0.5,
+ proc4(A,B,C,RAd4,RAk4,RT4,E).
+
+nilai4(A,B,C,D,E):-
+ D>=80,D<=100,
+ RAd4=0.5,
+ RAk4=0.75,
+ RT4=0.75,
+ proc4(A,B,C,RAd4,RAk4,RT4,E).  
+
+nilai4(A,B,C,D,E):-
+ D<0,
+ write("Nilai IPA yang anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit;
+ D>100,
+ write("Nilai IPA yang anda masukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit. 
+ 
+proc4(A,B,C,D,E,F,G):-
+ D<E,D<F,
+ NRAd4=((D/D)*4)+A,
+ NRAk4=((D/E)*4)+B,
+ NRT4=((D/F)*4)+C,
+ nilai5(NRAd4,NRAk4,NRT4,G).
+ 
+proc4(A,B,C,D,E,F,G):-
+ E<F,
+ NRAd4=((D/D)*4)+A,
+ NRAk4=((D/E)*4)+B,
+ NRT4=((D/F)*4)+C,
+ nilai5(NRAd4,NRAk4,NRT4,G).
+  
+proc4(A,B,C,D,E,F,G):-
+ NRAd4=((D/D)*4)+A,
+ NRAk4=((D/E)*4)+B,
+ NRT4=((D/F)*4)+C,
+ nilai5(NRAd4,NRAk4,NRT4,G). 
+ 
+nilai5(A,B,C,D):-
+ D>=60,D<=69,
+ RAd5=0.25,
+ RAk5=0.25,
+ RT5=0.25,
+ proc5(A,B,C,RAd5,RAk5,RT5).
+ 
+nilai5(A,B,C,D):-
+ D>=70,D<=79,
+ RAd5=0.25,
+ RAk5=0.25,
+ RT5=0.75,
+ proc5(A,B,C,RAd5,RAk5,RT5).
+ 
+nilai5(A,B,C,D):-
+ D>=80,D<=100,
+ RAd5=0.5,
+ RAk5=0.5,
+ RT5=1.00,
+ proc5(A,B,C,RAd5,RAk5,RT5).
+ 
+nilai5(A,B,C,D):-
+ D>=0,D<=59,
+ RAd5=0.10,
+ RAk5=0.10,
+ RT5=0.15,
+ proc5(A,B,C,RAd5,RAk5,RT5).
+
+nilai5(A,B,C,D):- 
+ D<0,
+ write("Nilai TIK yang dimasukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit;
+ D>100,
+ write("Nilai TIK yang dimasukkan tidak valid"),nl,
+ write("Ingin coba lagi?[y/t]"),readchar(X),loop(X),exit. 
+
+proc5(A,B,C,D,E,F):-
+ D>E,D>F,
+ NRAd5=((D/D)*4)+A,
+ NRAk5=((E/D)*4)+B,
+ NRT5 = ((F/D)*4)+C,
+ write("Score Akhir Anda untuk Administrasi Perkantoran adalah : ",NRAd5),nl,
+ write("Score Akhir Anda untuk Akuntansi adalah : ",NRAk5),nl,
+ write("Score Akhir Anda untuk TKJ adalah : ",NRT5),nl,
+ score(NRAd5,NRAk5,NRT5).
+ 
+proc5(A,B,C,D,E,F):-
+ E>F,
+ NRAd5=((D/E)*4)+A,
+ NRAk5=((E/E)*4)+B,
+ NRT5 = ((F/E)*4)+C,
+ write("Score Akhir Anda untuk Administrasi Perkantoran adalah : ",NRAd5),nl,
+ write("Score Akhir Anda untuk Akuntansi adalah : ",NRAk5),nl,
+ write("Score Akhir Anda untuk TKJ adalah : ",NRT5),nl,
+ score(NRAd5,NRAk5,NRT5).
+ 
+proc5(A,B,C,D,E,F):-
+ NRAd5=((D/F)*4)+A,
+ NRAk5=((E/F)*4)+B,
+ NRT5 = ((F/F)*4)+C,
+ write("Score Akhir Anda untuk Administrasi Perkantoran adalah : ",NRAd5),nl,
+ write("Score Akhir Anda untuk Akuntansi adalah : ",NRAk5),nl,
+ write("Score Akhir Anda untuk TKJ adalah : ",NRT5),nl,
+ score(NRAd5,NRAk5,NRT5).
+ 
+score(A,B,C):-
+ A>B,A>C,
+ write("Berdasarkan score, anda disarankan untuk memilih jurusan Administrasi Perkantoran"),nl.
+ 
+score(A,B,C):-
+ A=B,A=C,
+ write("Berdasarkan score, program kami tidak dapat menyarankan karna score sama").
+
+score(A,_,C):-
+ A=C,
+ write("Berdasarkan score, anda disarankan untuk memilih Administrasi Perkantoran atau TKJ").
+
+score(A,B,_):-
+ A=B,
+ write("Berdasarkan score, anda disarankan untuk memilih jurusan Administrasi perkantoran atau Akuntansi").
+ 
+score(_,B,C):-
+ B>C,
+ write("Berdasarkan score, anda disarankan untuk memilih jurusan Akuntansi"),nl.
+ 
+score(_,B,C):-
+ B=C,
+ write("Berdasarkan score, anda disarankan untuk memilih jurusan Administrasi perkantoran atau Akuntansi").
+ 
+ 
+score(_,_,_):-
+ write("Berdasarkan score, anda disarankan untuk memilih jurusan TKJ"),nl.
+  
+name([]).
+
+name([H|T]):-
+ write(H),nl,
+ name(T).  
+ 
+goal
+write("Project by : "),nl,
+name(["Ade Widyatama Dian Boernama","Triyanti", "Romy"]),nl,
+run.
